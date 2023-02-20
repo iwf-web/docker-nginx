@@ -90,17 +90,10 @@ The diffie hellman parameter file (`dhparam.pem`) will be also created and store
 
 ### Symfony 4
 
-### CraftCMS
+### Craft CMS
 
-The config file (`docker/build/assets/data/conf/nginx/framework-configs/craftcms.conf`) creates a hard disk cache for Craft pages
-in the folder `/var/run/nginx-cache`.
-
-If you want to use the caching configuration you have to set some parameters in your Craft's `general.php`.
-Also, your `cpTrigger` setting should be changed to `cmsadm` (instead of "admin").
-
-todo: List the required Craft config parameters
-
-When unsure use the configuration `craft-simplecache`. This one only implements some caching of resource files (e.g. images) and also understands the default `admin` cpTrigger.
+The nginx config file (`docker/build/assets/data/conf/nginx/framework-configs/craftcms-blitz.conf`) is used for Blitz Cache Plugin configuration.
+Cached files are located in `/app/web/cache` directory.
 
 ## Contribute!
 
