@@ -4,7 +4,7 @@ MAINTAINER Jens Hassler <j.hassler@iwf.ch>
 
 # Argument variables
 ARG GIT_COMMIT
-ARG GIT_BRANCH=releases/nginx-1.22
+ARG GIT_BRANCH=releases/nginx-1.24
 ARG GIT_DIRTY=undefined
 ARG BUILD_CREATOR
 ARG BUILD_NUMBER

@@ -14,18 +14,18 @@ It should be used together with our [PHP base image](https://hub.docker.com/repo
 
 ## Links
 
-The image is built weekly based on the official image `nginx:1.22-alpine`.
+The image is built weekly based on the official image `nginx:1.24-alpine`.
 
 It's available here: https://hub.docker.com/repository/docker/iwfwebsolutions/nginx
 
-You should always use the tag: `iwfwebsolutions/nginx:1.22-latest`
+You should always use the tag: `iwfwebsolutions/nginx:1.24-latest`
 
 ## Versions
 
-The X part of the version number `1.22-X` is always increased when we update the image configuration (e.g. config files).
+The X part of the version number `1.24-X` is always increased when we update the image configuration (e.g. config files).
 
 It is NOT an indication to the patch level of the base image. It's **always** the **latest** nginx image of the supplied version,
-currently only `1.22`.
+currently only `1.24`.
 
 See the CHANGELOG to find out the details.
 
