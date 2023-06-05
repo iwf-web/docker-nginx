@@ -1,5 +1,8 @@
 # Changelog
 
+`1.24-1` (2023-06-05)
+- update to new stable version 1.24
+
 `1.22-7` (2023-02-20)
 - README update
 
