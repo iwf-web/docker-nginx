@@ -14,7 +14,7 @@ It should be used together with our [PHP base image](https://hub.docker.com/repo
 
 ## Links
 
-The image is built weekly based on the official image `nginx:1.24-alpine`.
+The image is built weekly based on the official image `nginx:1.24-alpine` and `nginxinc/nginx-unprivileged:1.24-alpine` for the unprivileged build.
 
 It's available here: https://hub.docker.com/repository/docker/iwfwebsolutions/nginx
 
@@ -49,24 +49,27 @@ The configuration can be chosen with the environment variable `APP_FRAMEWORK`.
 
 Currently you have 3 options:
 
-| Environment variable | default value | Description                                                                                                                                                                                           |
-| -------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| APP_FRAMEWORK        | symfony       | The configuration file to link:`<br>symfony` for Symfony 3 (app.php in `web`).`<br>symfony4` for Symfony 4 (index.php in `public`).`<br>craftcms` or `craftcms-nocache` for CraftCMS 3/4, |
-| RUNTIME_ENVIRONMENT  | local         | Needed for scripts, currently only for `30_adjust_robots-txt.sh` (see below). Options:`<br>local`, `dev`, `qa`, `prod`                                                                      |
-| DOCUMENT_ROOT        | /app/web      | Directory where the webserver expects your static files to be mounted or copied into                                                                                                                  |
-| WAIT_FOR             | fpm:9000      | The webserver waits for the FPM container to be started and answer network calls on Port 9000. Disable with an empty string.                                                                          |
-| UPSTREAM_HOST        | fpm:9000      | The upstream host:port for nginx as proxy (nginx `server` directive)                                                                                                                                |
+| Environment variable | default value | Description                                                                                                                                                                      |
+|----------------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| APP_FRAMEWORK        | symfony       | The configuration file to link:`symfony` for Symfony 3 (app.php in `web`).`symfony4` for Symfony 4/5 (index.php in `public`).`craftcms` or `craftcms-nocache` for CraftCMS 3/4, |
+| RUNTIME_ENVIRONMENT  | local         | Needed for scripts, currently only for `30_adjust_robots-txt.sh` (see below). Options:`<br>local`, `dev`, `qa`, `prod`                                                           |
+| DOCUMENT_ROOT        | /app/web      | Directory where the webserver expects your static files to be mounted or copied into                                                                                             |
+| WAIT_FOR             | fpm:9000      | The webserver waits for the FPM container to be started and answer network calls on Port 9000. Disable with an empty string.                                                     |
+| UPSTREAM_HOST        | fpm:9000      | The upstream host:port for nginx as proxy (nginx `server` directive)                                                                                                             |
+| ACCESS_LOG           | off           | Enable the access log by specifying a path to the access log file (inside the container), you normally should use `/var/log/nginx/access.log`                                    |
 
 
 ## Default startup scripts
 
 All the scripts in the container's `/data/dockerinit.d` folder are run on each startup:
 
-| Script                  | Description                                                                                                                                                                                   |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 00_enable_site.sh       | Copies and resolves `UPSTREAM_SERVER` with the `APP_FRAMEWORK`.conf file from `nginx/framework-configs` to `nginx/sites.d` where it's picked up by the default `nginx.conf`         |
-| 00_wait-for-deps.sh     | Waits for the `WAIT_FOR` server -- by default for the PHP FPM server                                                                                                                        |
-| 30_adjust_robots-txt.sh | Creates a "Disallow all" robots.txt file for all environments (defined by `RUNTIME_ENVIRONMENT`) NOT being `local` and `prod`. This prevents search engines to index your DEV/QA sites. |
+| Script                        | Description                                                                                                                                                                             |
+|-------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 00_create_self-signed-cert.sh | Creates a self-signed certificate for the webserver if no certificate exists in /data/conf/nginx/certificates                                                                           |
+| 00_enable_site.sh             | Copies and resolves `UPSTREAM_SERVER` with the `APP_FRAMEWORK`.conf file from `nginx/framework-configs` to `nginx/sites.d` where it's picked up by the default `nginx.conf`             |
+| 00_wait-for-deps.sh           | Waits for the `WAIT_FOR` server -- by default for the PHP FPM server                                                                                                                    |
+| 30_adjust_robots-txt.sh       | Creates a "Disallow all" robots.txt file for all environments (defined by `RUNTIME_ENVIRONMENT`) NOT being `local` and `prod`. This prevents search engines to index your DEV/QA sites. |
+| 99_cleanup.sh                 | Removes some system software that is only required for the startup process                                                                                                              |
 
 ## Extension points (change or extend configuration)
 

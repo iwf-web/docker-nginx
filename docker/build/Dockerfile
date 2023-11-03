@@ -21,6 +21,8 @@ ENV DOCUMENT_ROOT="/app/web"
 ENV WAIT_FOR="fpm:9000"
 # The upstream host:port for nginx as proxy (nginx server directive)
 ENV UPSTREAM_SERVER="fpm:9000"
+# The setting of "access_log"
+ENV ACCESS_LOG="off"
 
 # Add labels
 LABEL io.web-solutions.git-branch=$GIT_BRANCH \
