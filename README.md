@@ -7,7 +7,7 @@ container.
 
 It's a vital part of the IWF application stack.
 
-This image contains configurations for Symfony3, Symfony4 and CraftCMS.
+This image contains configurations for Symfony4/5 and CraftCMS.
 
 It should be used together with our [PHP base image](https://hub.docker.com/repository/docker/iwfwebsolutions/phpfpm).
 
@@ -57,6 +57,12 @@ Currently you have 3 options:
 | WAIT_FOR             | fpm:9000      | The webserver waits for the FPM container to be started and answer network calls on Port 9000. Disable with an empty string.                                                                          |
 | UPSTREAM_HOST        | fpm:9000      | The upstream host:port for nginx as proxy (nginx `server` directive)                                                                                                                                |
 
+## Exposed ports
+
+The image exposes ports 80 and 443.
+
+If you use the unprivileged image, it will use port 8080 internally instead of 80.
+
 ## Default startup scripts
 
 All the scripts in the container's `/data/dockerinit.d` folder are run on each startup:
@@ -85,8 +91,6 @@ If you don't supply your own files, this image will automatically generate a sel
 The diffie hellman parameter file (`dhparam.pem`) will be also created and stored in this folder if it doesn't exist.
 
 ## Framework specific
-
-### Symfony 3
 
 ### Symfony 4
 
