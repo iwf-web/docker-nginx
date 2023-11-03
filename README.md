@@ -57,11 +57,6 @@ Currently you have 3 options:
 | WAIT_FOR             | fpm:9000      | The webserver waits for the FPM container to be started and answer network calls on Port 9000. Disable with an empty string.                                                                          |
 | UPSTREAM_HOST        | fpm:9000      | The upstream host:port for nginx as proxy (nginx `server` directive)                                                                                                                                |
 
-## Exposed ports
-
-The image exposes ports 80 and 443.
-
-If you use the unprivileged image, it will use port 8080 internally instead of 80.
 
 ## Default startup scripts
 
