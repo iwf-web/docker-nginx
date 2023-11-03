@@ -32,21 +32,22 @@ LABEL io.web-solutions.git-branch=$GIT_BRANCH \
       io.web-solutions.build-number=$BUILD_NUMBER
 
 # COPY our config
-COPY ./assets/ /
+COPY --chown=nginx ./assets/ /
 
 # temporarily switch to root
 USER root
 
 # adjust ownerships
-RUN chmod +x /usr/local/bin/webstartup.sh && chmod +x /usr/local/bin/wait-for.sh
-RUN chown -R nginx /var/log/nginx /data/conf/nginx
+RUN chmod +x /usr/local/bin/webstartup.sh && chmod +x /usr/local/bin/wait-for.sh && chown -R nginx /var/log/nginx
 
 
 # install additional software
 # netcat (nc) for wait-for.sh script, openssl for initial local certs, sudo for the startup scripts
 # this stuff will be removed upon startup in 99_cleanup.sh
-RUN apk add --update --no-cache netcat-openbsd openssl sudo
+RUN apk update && apk add --no-cache netcat-openbsd openssl sudo
 
+# upgrade all software to newest versions
+RUN apk add --upgrade --no-cache apk-tools && apk upgrade --no-cache --available
 
 # Set time zone
 RUN ln -fs /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
