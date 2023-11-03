@@ -1,5 +1,11 @@
 # Changelog
 
+`1.24-unprivileged-1` (2023-11-03)
+- add unprivileged image variant based on nginxinc/nginx-unprivileged
+- remove unneeded system packages after startup
+- unified logging into /var/log/nginx/error.log
+- configurable access_log
+
 `1.24-1` (2023-06-05)
 - update to new stable version 1.24
 
