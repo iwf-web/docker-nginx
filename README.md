@@ -47,11 +47,11 @@ At the moment this image can be configured with all the configurations in the fo
 
 The configuration can be chosen with the environment variable `APP_FRAMEWORK`.
 
-Currently you have 3 options:
+Currently you have the following options:
 
 | Environment variable | default value | Description                                                                                                                                                                      |
 |----------------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| APP_FRAMEWORK        | symfony       | The configuration file to link:`symfony` for Symfony 3 (app.php in `web`).`symfony4` for Symfony 4/5 (index.php in `public`).`craftcms` or `craftcms-nocache` for CraftCMS 3/4, |
+| APP_FRAMEWORK        | symfony4      | The configuration file to link:`symfony` for Symfony 3 (app.php in `web`).`symfony4` for Symfony 4/5 (index.php in `public`).`craftcms` or `craftcms-nocache` for CraftCMS 3/4, |
 | RUNTIME_ENVIRONMENT  | local         | Needed for scripts, currently only for `30_adjust_robots-txt.sh` (see below). Options:`<br>local`, `dev`, `qa`, `prod`                                                           |
 | DOCUMENT_ROOT        | /app/web      | Directory where the webserver expects your static files to be mounted or copied into                                                                                             |
 | WAIT_FOR             | fpm:9000      | The webserver waits for the FPM container to be started and answer network calls on Port 9000. Disable with an empty string.                                                     |
@@ -84,7 +84,7 @@ You can insert your own configuration at these points. Just mount your own confi
 
 ## Permissions
 
-The unprivileged image runs as user "nginx" (uid 101).
+The **unprivileged** image runs as user "nginx" (uid 101).
 
 All the things you do atop this base image must respect this. If you copy additional files with the COPY directive,
 you have to use it like this: "COPY --chown=nginx ..."
