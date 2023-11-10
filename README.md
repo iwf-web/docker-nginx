@@ -82,12 +82,15 @@ You can insert your own configuration at these points. Just mount your own confi
 | /data/conf/nginx/security-headers.d | `.conf` files here are included by the server and location configs to extend or override the applied [security headers](security-headers.md) |
 | /data/conf/nginx/certificates       | You should mount this directory to a folder on your host system. See the SSL section for further details.                                    |
 
-## Permissions
+## Unprivileged image
 
 The **unprivileged** image runs as user "nginx" (uid 101).
 
 All the things you do atop this base image must respect this. If you copy additional files with the COPY directive,
 you have to use it like this: "COPY --chown=nginx ..."
+
+The unprivileged image also listens to port 8080 instead of 80. So, you have to change the port mapping to the outside from '80:80' to '80:8080'.
+
 
 ## SSL support
 

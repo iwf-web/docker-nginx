@@ -1,5 +1,8 @@
 # Changelog
 
+`1.24-unprivileged-2` (2023-11-10)
+- image listens now on port 8080 because podman can't bind to port 80
+
 `1.24-unprivileged-1` (2023-11-03)
 - add unprivileged image variant based on nginxinc/nginx-unprivileged
 - remove unneeded system packages after startup
