@@ -1,5 +1,8 @@
 # Changelog
 
+`1.24-unprivileged-3` (2023-11-13)
+- make the "listen" port configurable (default 80 - again)
+
 `1.24-unprivileged-2` (2023-11-10)
 - image listens now on port 8080 because podman can't bind to port 80
 

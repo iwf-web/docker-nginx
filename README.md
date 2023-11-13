@@ -11,7 +11,6 @@ This image contains configurations for Symfony4/5 and CraftCMS.
 
 It should be used together with our [PHP base image](https://hub.docker.com/repository/docker/iwfwebsolutions/phpfpm).
 
-
 ## Links
 
 The image is built weekly based on the official image `nginx:1.24-alpine` and `nginxinc/nginx-unprivileged:1.24-alpine` for the unprivileged build.
@@ -32,7 +31,7 @@ See the CHANGELOG to find out the details.
 ## Changes to the official base image
 
 | Change                          | Description                                                                                                                                                                                   |
-| ------------------------------- |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|---------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | assets                          | all the files in the `build/assets` folder are copied to the base image root                                                                                                                  |
 | framework specific config files | The config files in the folder `build/assets/data/conf/nginx/framework-configs` are linked into the folder `/data/conf/nginx/sites.d` on startup through the script `00_link_config_files.sh` |
 | timezone                        | The timezone in the Linux environment is changed to the `TIMEZONE` environment variable (default: Europe/Zurich)                                                                              |
@@ -49,15 +48,15 @@ The configuration can be chosen with the environment variable `APP_FRAMEWORK`.
 
 Currently you have the following options:
 
-| Environment variable | default value | Description                                                                                                                                                                      |
-|----------------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Environment variable | default value | Description                                                                                                                                                                     |
+|----------------------|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | APP_FRAMEWORK        | symfony4      | The configuration file to link:`symfony` for Symfony 3 (app.php in `web`).`symfony4` for Symfony 4/5 (index.php in `public`).`craftcms` or `craftcms-nocache` for CraftCMS 3/4, |
-| RUNTIME_ENVIRONMENT  | local         | Needed for scripts, currently only for `30_adjust_robots-txt.sh` (see below). Options:`<br>local`, `dev`, `qa`, `prod`                                                           |
-| DOCUMENT_ROOT        | /app/web      | Directory where the webserver expects your static files to be mounted or copied into                                                                                             |
-| WAIT_FOR             | fpm:9000      | The webserver waits for the FPM container to be started and answer network calls on Port 9000. Disable with an empty string.                                                     |
-| UPSTREAM_HOST        | fpm:9000      | The upstream host:port for nginx as proxy (nginx `server` directive)                                                                                                             |
-| ACCESS_LOG           | off           | Enable the access log by specifying a path to the access log file (inside the container), you normally should use `/var/log/nginx/access.log`                                    |
-
+| RUNTIME_ENVIRONMENT  | local         | Needed for scripts, currently only for `30_adjust_robots-txt.sh` (see below). Options:`<br>local`, `dev`, `qa`, `prod`                                                          |
+| DOCUMENT_ROOT        | /app/web      | Directory where the webserver expects your static files to be mounted or copied into                                                                                            |
+| WAIT_FOR             | fpm:9000      | The webserver waits for the FPM container to be started and answer network calls on Port 9000. Disable with an empty string.                                                    |
+| UPSTREAM_HOST        | fpm:9000      | The upstream host:port for nginx as proxy (nginx `server` directive)                                                                                                            |
+| ACCESS_LOG           | off           | Enable the access log by specifying a path to the access log file (inside the container), you normally should use `/var/log/nginx/access.log`                                   |
+| LISTEN_PORT          | 80            | Change this to "8080" on the unprivileged image if the container cannot bind to port 80                                                                                         |
 
 ## Default startup scripts
 
@@ -73,7 +72,8 @@ All the scripts in the container's `/data/dockerinit.d` folder are run on each s
 
 ## Extension points (change or extend configuration)
 
-You can insert your own configuration at these points. Just mount your own config files into these directories or create a derived image from this one and change the files as needed.
+You can insert your own configuration at these points. Just mount your own config files into these directories or create a derived image from this one
+and change the files as needed.
 
 | Folder                              | Description                                                                                                                                  |
 |-------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
@@ -89,13 +89,13 @@ The **unprivileged** image runs as user "nginx" (uid 101).
 All the things you do atop this base image must respect this. If you copy additional files with the COPY directive,
 you have to use it like this: "COPY --chown=nginx ..."
 
-The unprivileged image also listens to port 8080 instead of 80. So, you have to change the port mapping to the outside from '80:80' to '80:8080'.
-
+The unprivileged image may not be able to bind to port 80 if the runtime engine does not allow it (e.g. podman by default).
+In this case, you can set LISTEN_PORT env var to 8080 and change the port mapping to the outside from '80:80' to '80:8080'.
 
 ## SSL support
 
 You can store your own SSL certificates in the folder `/data/conf/nginx/certificates`. The files should be named `cert.pem` and `key.pem`.
-If you don't supply your own files, this image will automatically generate a self signed SSL certificate inside this folder. 
+If you don't supply your own files, this image will automatically generate a self signed SSL certificate inside this folder.
 The diffie hellman parameter file (`dhparam.pem`) will be also created and stored in this folder if it doesn't exist.
 
 ## Framework specific

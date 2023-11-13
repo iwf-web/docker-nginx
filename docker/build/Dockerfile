@@ -23,6 +23,8 @@ ENV WAIT_FOR="fpm:9000"
 ENV UPSTREAM_SERVER="fpm:9000"
 # The setting of "access_log"
 ENV ACCESS_LOG="off"
+# The setting for "listen" - normally this should be 80, but the unprivileged image may have to listen on port 8080
+ENV LISTEN_PORT="80"
 
 # Add labels
 LABEL io.web-solutions.git-branch=$GIT_BRANCH \
