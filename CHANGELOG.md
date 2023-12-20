@@ -1,5 +1,8 @@
 # Changelog
 
+`1.24-unprivileged-4` (2023-12-20)
+- enable multi platform builds
+
 `1.24-unprivileged-3` (2023-11-13)
 - make the "listen" port configurable (default 80 - again)
 
