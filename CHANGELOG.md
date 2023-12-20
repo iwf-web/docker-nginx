@@ -1,5 +1,8 @@
 # Changelog
 
+`1.24-2` (2023-12-20)
+- enable multi platform build
+
 `1.24-1` (2023-06-05)
 - update to new stable version 1.24
 
