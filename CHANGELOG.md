@@ -1,5 +1,8 @@
 # Changelog
 
+`1.22-8` (2023-12-22)
+- enable multi platform build
+
 `1.22-7` (2023-02-20)
 - README update
 
