@@ -57,6 +57,9 @@ RUN ln -fs /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 # pre-create the document root
 RUN mkdir -p ${DOCUMENT_ROOT} && chown nginx ${DOCUMENT_ROOT}
 
+# remove symlinks to busybox for some unneeded internet tools - the commands itself cannot be deleted.
+RUN rm -f /bin/wget /usr/bin/wget /bin/ping /usr/bin/ping /bin/curl /usr/bin/curl
+
 # enable sudo for making startup scripts work and switch back to unprivileged user
 RUN echo "nginx ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 USER nginx

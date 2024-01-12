@@ -1,5 +1,8 @@
 # Changelog
 
+`1.24-unprivileged-5` (2024-01-12)
+- remove apk after startup & remove symlinks to some net tools 
+
 `1.24-unprivileged-4` (2023-12-20)
 - enable multi platform builds
 
