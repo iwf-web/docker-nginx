@@ -1,16 +1,22 @@
-FROM nginxinc/nginx-unprivileged:1.24-alpine
+#FROM nginxinc/nginx-unprivileged:1.25-alpine
+FROM openresty/openresty:1.25.3.1-0-alpine-apk
 
 MAINTAINER Jens Hassler <j.hassler@iwf.ch>
 
 # Argument variables
 ARG GIT_COMMIT
-ARG GIT_BRANCH=releases/nginx-1.24-unprivileged
+ARG GIT_BRANCH=releases/nginx-1.25-openresty
 ARG GIT_DIRTY=undefined
 ARG BUILD_CREATOR
 ARG BUILD_NUMBER
 ARG TIMEZONE=Europe/Zurich
 
 ENV DEBIAN_FRONTEND=noninteractive
+
+# default env variables for the clamav virus scanning connection
+ENV SCAN_PATH="/vscan"
+ENV CLAMAV_HOST="clamav"
+ENV CLAMAV_PORT=9000
 
 # This one defines which config file is linked into sites.d (APP_FRAMEWORK.conf)
 ENV APP_FRAMEWORK="symfony4"
@@ -33,6 +39,12 @@ LABEL io.web-solutions.git-branch=$GIT_BRANCH \
       io.web-solutions.build-creator=$BUILD_CREATOR \
       io.web-solutions.build-number=$BUILD_NUMBER
 
+# adjustments for openresty image to add non-privileged user
+RUN apk add envsubst lua-resty-http && cp /usr/share/lua/common/resty/* /usr/local/openresty/lualib/resty/
+RUN addgroup --gid ${GID:-101} nginx && adduser --uid ${UID:-101} -G nginx --disabled-password --gecos "" nginx
+RUN mkdir /var/log/nginx && chown -R nginx /var/log/nginx
+RUN chown -R nginx /var/run/openresty /usr/local/openresty/nginx
+
 # COPY our config
 COPY --chown=nginx ./assets/ /
 
@@ -40,7 +52,7 @@ COPY --chown=nginx ./assets/ /
 USER root
 
 # adjust ownerships
-RUN chmod +x /usr/local/bin/webstartup.sh && chmod +x /usr/local/bin/wait-for.sh && chown -R nginx /var/log/nginx
+RUN chmod +x /usr/local/bin/webstartup.sh && chmod +x /usr/local/bin/wait-for.sh
 
 
 # install additional software
@@ -65,4 +77,4 @@ RUN echo "nginx ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 USER nginx
 
 ENTRYPOINT ["/usr/local/bin/webstartup.sh"]
-CMD ["nginx", "-g", "daemon off;", "-c", "/data/conf/nginx/nginx.conf"]
+CMD ["/usr/local/openresty/bin/openresty", "-g", "daemon off;", "-c", "/data/conf/nginx/nginx.conf"]

@@ -13,18 +13,19 @@ It should be used together with our [PHP base image](https://hub.docker.com/repo
 
 ## Links
 
-The image is built weekly based on the official image `nginx:1.24-alpine` and `nginxinc/nginx-unprivileged:1.24-alpine` for the unprivileged build.
+The image is built weekly based on the official image `openresty:1.25.x.x-alpine-apk`. 
+This base image allows having complex rules applied e.g. by Lua in the webserver configuration. This is needed to allow pass-thru virus scanning with `clamav-rest`. 
 
 It's available here: https://hub.docker.com/repository/docker/iwfwebsolutions/nginx
 
-You should always use the tag: `iwfwebsolutions/nginx:1.24-latest`
+You should always use the tag: `iwfwebsolutions/nginx:1.25-latest`
 
 ## Versions
 
-The X part of the version number `1.24-X` is always increased when we update the image configuration (e.g. config files).
+The X part of the version number `1.25-X` is always increased when we update the image configuration (e.g. config files).
 
 It is NOT an indication to the patch level of the base image. It's **always** the **latest** nginx image of the supplied version,
-currently only `1.24`.
+currently only `1.25`.
 
 See the CHANGELOG to find out the details.
 
@@ -57,6 +58,10 @@ Currently you have the following options:
 | UPSTREAM_HOST        | fpm:9000      | The upstream host:port for nginx as proxy (nginx `server` directive)                                                                                                            |
 | ACCESS_LOG           | off           | Enable the access log by specifying a path to the access log file (inside the container), you normally should use `/var/log/nginx/access.log`                                   |
 | LISTEN_PORT          | 80            | Change this to "8080" on the unprivileged image if the container cannot bind to port 80                                                                                         |
+| SCAN_PATH            | /vscan        | Shared directory with the clamav service to exchange files for virus scanning                                                                                                   |
+| CLAMAV_HOST          | clamav        | The host (reachable from within nginx) in your docker stack via http running the image iwfwebsolutions/clamav-rest                                                              |
+| CLAMAV_PORT          | 9000          | The port of the clamav rest service                                                                                                                                             |
+
 
 ## Default startup scripts
 
@@ -92,6 +97,57 @@ you have to use it like this: "COPY --chown=nginx ..."
 The unprivileged image may not be able to bind to port 80 if the runtime engine does not allow it (e.g. podman by default).
 In this case, you can set LISTEN_PORT env var to 8080 and change the port mapping to the outside from '80:80' to '80:8080'.
 
+## Virus scanning with clamav-rest
+
+### include the clamav-rest container in your docker stack
+
+This is the minimum config. Please see the docs of clamav-rest, especially for configuration values.
+
+The max size parameters should match the maximum allowed upload size in your application.
+
+```
+  clamav:
+    image: iwfwebsolutions/clamav-rest:latest
+    environment:
+      MAX_SCAN_SIZE: 100M # default 100M
+      MAX_FILE_SIZE: 100M # default 25M
+    volumes:
+      - ./data/vscan:/vscan
+```
+
+### setup the shared virus scanning directory
+
+To allow fast virus scanning, the uploaded files must be stored temporarily in a folder accessible by nginx and clamav-rest.
+The default folder name inside the container is `/vscan`, but that can be changed with the `SCAN_PATH` environment variable (see above).
+
+The folder must exist in the mounted filesystem path, and both the `nginx` and `clamav` services must be configured the same way and have access to the same folder.
+
+The user with id `101` (nginx) should have write access.
+
+### application specific configuration
+
+To enable on-upload virus scanning you have to put a file with location blocks of your upload routes to the `server-partials.d` directory.
+Include the file `clamav.conf` there. Each location you put there is routed through the virus scanning service.
+
+To make it work, each route you want to support must:
+
+- accept POST requests
+- send one (!) file as a multipart form binary
+
+See the documentation of `clamav-rest` for the returned status codes. 
+Generally, if no virus is found, it returns 200 and forwards the request to the fastcgi backend.
+If a virus is found, it returns a status code 406 to the frontend and a json containing the name of the found malware.
+
+Example `server-partials.d/upload.conf`:
+
+```
+location "/common/api/files" {
+    include "clamav.conf";
+}
+```
+
+
+
 ## SSL support
 
 You can store your own SSL certificates in the folder `/data/conf/nginx/certificates`. The files should be named `cert.pem` and `key.pem`.
@@ -100,7 +156,7 @@ The diffie hellman parameter file (`dhparam.pem`) will be also created and store
 
 ## Framework specific
 
-### Symfony 4
+### Symfony 4, 5, 6
 
 ### Craft CMS
 
