@@ -28,8 +28,9 @@ ENV DOCUMENT_ROOT="/app/web"
 ENV WAIT_FOR="fpm:9000"
 # The upstream host:port for nginx as proxy (nginx server directive)
 ENV UPSTREAM_SERVER="fpm:9000"
-# The setting of "access_log"
+# The default log settings
 ENV ACCESS_LOG="off"
+ENV ERROR_LOG="/var/log/nginx/error.log warn"
 # The setting for "listen" - normally this should be 80, but the unprivileged image may have to listen on port 8080
 ENV LISTEN_PORT="80"
 
