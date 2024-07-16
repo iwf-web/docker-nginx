@@ -17,6 +17,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV SCAN_PATH="/vscan"
 ENV CLAMAV_HOST="clamav"
 ENV CLAMAV_PORT=9000
+ENV FORWARD_ROUTE="/index.php"
 
 # This one defines which config file is linked into sites.d (APP_FRAMEWORK.conf)
 ENV APP_FRAMEWORK="symfony4"
