@@ -58,9 +58,10 @@ Currently you have the following options:
 | UPSTREAM_HOST        | fpm:9000      | The upstream host:port for nginx as proxy (nginx `server` directive)                                                                                                            |
 | ACCESS_LOG           | off           | Enable the access log by specifying a path to the access log file (inside the container), you normally should use `/var/log/nginx/access.log`                                   |
 | LISTEN_PORT          | 80            | Change this to "8080" on the unprivileged image if the container cannot bind to port 80                                                                                         |
-| SCAN_PATH            | /vscan        | Shared directory with the clamav service to exchange files for virus scanning                                                                                                   |
+| CLAMAV_SCAN_PATH     | /vscan        | Shared directory with the clamav service to exchange files for virus scanning                                                                                                   |
 | CLAMAV_HOST          | clamav        | The host (reachable from within nginx) in your docker stack via http running the image iwfwebsolutions/clamav-rest                                                              |
 | CLAMAV_PORT          | 9000          | The port of the clamav rest service                                                                                                                                             |
+| CLAMAV_FORWARD_ROUTE | /index.php    | The route the virus scanner should forward the original request if no virus is found                                                                                            |
 
 
 ## Default startup scripts
