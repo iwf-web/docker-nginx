@@ -3,7 +3,7 @@
 
 DOCKER_NAME=iwfwebsolutions
 BUILD_NAME=nginx
-LATEST_TAG=1.24-unprivileged-latest
+LATEST_TAG=1.25-vscan-latest
 GIT_REPO=https://github.com/iwf-web/docker-nginx.git
 CODE_BASE=./code
 DEF_PUSHDOCKERREGISTRY=0
