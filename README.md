@@ -49,20 +49,20 @@ The configuration can be chosen with the environment variable `APP_FRAMEWORK`.
 
 Currently you have the following options:
 
-| Environment variable | default value                 | Description                                                                                                                                                                     |
-|----------------------|-------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| APP_FRAMEWORK        | symfony4                      | The configuration file to link:`symfony` for Symfony 3 (app.php in `web`).`symfony4` for Symfony 4/5 (index.php in `public`).`craftcms` or `craftcms-nocache` for CraftCMS 3/4, |
-| RUNTIME_ENVIRONMENT  | local                         | Needed for scripts, currently only for `30_adjust_robots-txt.sh` (see below). Options:`<br>local`, `dev`, `qa`, `prod`                                                          |
-| DOCUMENT_ROOT        | /app/web                      | Directory where the webserver expects your static files to be mounted or copied into                                                                                            |
-| WAIT_FOR             | fpm:9000                      | The webserver waits for the FPM container to be started and answer network calls on Port 9000. Disable with an empty string.                                                    |
-| UPSTREAM_HOST        | fpm:9000                      | The upstream host:port for nginx as proxy (nginx `server` directive)                                                                                                            |
-| ACCESS_LOG           | off                           | Enable the access log by specifying a path to the access log file (inside the container), you normally should use `/var/log/nginx/access.log`                                   |
-| ERROR_LOG            | /var/log/nginx/error.log warn | Enable the error log by specifying a path to the error log file (inside the container), or `stderr LEVEL` for using streamed logging                                            |
-| LISTEN_PORT          | 80                            | Change this to "8080" on the unprivileged image if the container cannot bind to port 80                                                                                         |
-| CLAMAV_SCAN_PATH     | /vscan                        | Shared directory with the clamav service to exchange files for virus scanning                                                                                                   |
-| CLAMAV_HOST          | clamav                        | The host (reachable from within nginx) in your docker stack via http running the image iwfwebsolutions/clamav-rest                                                              |
-| CLAMAV_PORT          | 9000                          | The port of the clamav rest service                                                                                                                                             |
-| CLAMAV_FORWARD_ROUTE | /index.php                    | The route the virus scanner should forward the original request if no virus is found                                                                                            |
+| Environment variable | default value | Description                                                                                                                                                                     |
+|----------------------|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| APP_FRAMEWORK        | symfony4      | The configuration file to link:`symfony` for Symfony 3 (app.php in `web`).`symfony4` for Symfony 4/5 (index.php in `public`).`craftcms` or `craftcms-nocache` for CraftCMS 3/4, |
+| RUNTIME_ENVIRONMENT  | local         | Needed for scripts, currently only for `30_adjust_robots-txt.sh` (see below). Options:`<br>local`, `dev`, `qa`, `prod`                                                          |
+| DOCUMENT_ROOT        | /app/web      | Directory where the webserver expects your static files to be mounted or copied into                                                                                            |
+| WAIT_FOR             | fpm:9000      | The webserver waits for the FPM container to be started and answer network calls on Port 9000. Disable with an empty string.                                                    |
+| UPSTREAM_HOST        | fpm:9000      | The upstream host:port for nginx as proxy (nginx `server` directive)                                                                                                            |
+| ACCESS_LOG           | off           | Enable the access log by specifying a path to the access log file (inside the container), you normally should use `/var/log/nginx/access.log`                                   |
+| ERROR_LOG            | stderr warn   | Enable the error log by specifying a path to the error log file (inside the container, e.g. `/var/log/nginx/error.log warn`), or `stderr LEVEL` for using streamed logging      |
+| LISTEN_PORT          | 80            | Change this to "8080" on the unprivileged image if the container cannot bind to port 80                                                                                         |
+| CLAMAV_SCAN_PATH     | /vscan        | Shared directory with the clamav service to exchange files for virus scanning                                                                                                   |
+| CLAMAV_HOST          | clamav        | The host (reachable from within nginx) in your docker stack via http running the image iwfwebsolutions/clamav-rest                                                              |
+| CLAMAV_PORT          | 9000          | The port of the clamav rest service                                                                                                                                             |
+| CLAMAV_FORWARD_ROUTE | /index.php    | The route the virus scanner should forward the original request if no virus is found                                                                                            |
 
 
 ## Default startup scripts
@@ -131,14 +131,15 @@ The user with id `101` (nginx) should have write access.
 To enable on-upload virus scanning you have to put a file with location blocks of your upload routes to the `server-partials.d` directory.
 Include the file `clamav.conf` there. Each location you put there is routed through the virus scanning service.
 
-To make it work, each route you want to support must:
+To make it work, each route should comply with the following rules:
 
 - accept POST requests
-- send one (!) file as a multipart form binary
+- accept one (!) file as a multipart form binary
+- in a multipart form, only the first file with a "filename" property is checked
 
-See the documentation of `clamav-rest` for the returned status codes. 
-Generally, if no virus is found, it returns 200 and forwards the request to the fastcgi backend.
-If a virus is found, it returns a status code 406 to the frontend and a json containing the name of the found malware.
+See the documentation of `iwfwebsolutions/clamav-rest` for the returned status codes. 
+Generally, if no virus is found, it returns 200 and forwards the request to the CLAMAV_FORWARD_ROUTE (`/index.php` by default).
+If a virus is found, it returns a status code 406 to the frontend and a json body containing the name of the found malware.
 
 Example `server-partials.d/upload.conf`:
 
@@ -147,7 +148,6 @@ location "/common/api/files" {
     include "clamav.conf";
 }
 ```
-
 
 
 ## SSL support

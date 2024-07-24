@@ -1,5 +1,11 @@
 # Changelog
 
+`1.25-vscan-1` (2024-07-24)
+- add virus scanning feature
+- move to OpenResty as base nginx image
+- change default error logging to stderr
+- add environment variables for adjusting the logging
+
 `1.24-unprivileged-5` (2024-01-12)
 - remove apk after startup & remove symlinks to some net tools 
 
