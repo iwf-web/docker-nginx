@@ -91,7 +91,7 @@ and change the files as needed.
 
 ## Unprivileged image
 
-The **unprivileged** image runs as user "nginx" (uid 101).
+This is an **unprivileged** image running as user "nginx" (uid 101).
 
 All the things you do atop this base image must respect this. If you copy additional files with the COPY directive,
 you have to use it like this: "COPY --chown=nginx ..."
@@ -129,7 +129,7 @@ The user with id `101` (nginx) should have write access.
 ### application specific configuration
 
 To enable on-upload virus scanning you have to put a file with location blocks of your upload routes to the `server-partials.d` directory.
-Include the file `clamav.conf` there. Each location you put there is routed through the virus scanning service.
+Include the file `clamav-scan.conf` there. Each location you put there is routed through the virus scanning service.
 
 To make it work, each route should comply with the following rules:
 
@@ -145,9 +145,39 @@ Example `server-partials.d/upload.conf`:
 
 ```
 location "/common/api/files" {
-    include "clamav.conf";
+    include "clamav-scan.conf";
 }
 ```
+
+To include a basic rate limiting use the following config:
+
+```
+location "/common/api/files" {
+    limit_req zone=vscan-scan burst=5;
+    include "clamav-scan.conf";
+}
+```
+
+There are 2 basic rate limiters configured in the `nginx.conf`. 
+
+- `vscan-scan`: 30 requests/minute per IP address
+- `vscan-health`: 10 requests/minute per IP address
+
+By using these, the requests are delayed until a new slot is free.
+
+### enable the virus scanning healthcheck endpoint
+
+By configuring this endpoint you can monitor if the virus signatures are up2date and the scanner is reachable and running:
+
+```
+location "/vscan-healthcheck" {
+    limit_req zone=vscan-health burst=1;
+    include "clamav-health.conf";
+}
+```
+
+This endpoint returns `200` if everything's fine, `420` if the signatures are out-of-date, and a 500er if something else is wrong (e.g. scanner not running).
+See the docs of `iwfwebsolutions/clamav-rest` for more details.
 
 
 ## SSL support

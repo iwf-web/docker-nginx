@@ -1,5 +1,9 @@
 # Changelog
 
+`1.25-vscan-2` (2024-08-06)
+- add healthcheck configuration
+- add basic rate limiting for virus scanning
+
 `1.25-vscan-1` (2024-07-24)
 - add virus scanning feature
 - move to OpenResty as base nginx image

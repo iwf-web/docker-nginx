@@ -1,11 +1,10 @@
-#FROM nginxinc/nginx-unprivileged:1.25-alpine
-FROM openresty/openresty:1.25.3.1-0-alpine-apk
+FROM openresty/openresty:1.25.3.2-alpine-apk
 
 MAINTAINER Jens Hassler <j.hassler@iwf.ch>
 
 # Argument variables
 ARG GIT_COMMIT
-ARG GIT_BRANCH=releases/nginx-1.25-openresty
+ARG GIT_BRANCH=releases/nginx-1.25-vscan
 ARG GIT_DIRTY=undefined
 ARG BUILD_CREATOR
 ARG BUILD_NUMBER
