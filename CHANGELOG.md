@@ -1,5 +1,8 @@
 # Changelog
 
+`1.25-vscan-3` (2024-09-06)
+- add extension point for main config
+
 `1.25-vscan-2` (2024-08-06)
 - add healthcheck configuration
 - add basic rate limiting for virus scanning

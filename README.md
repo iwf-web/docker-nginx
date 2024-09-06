@@ -87,6 +87,7 @@ and change the files as needed.
 | /data/conf/nginx/http-partials.d    | `.conf` files here are included by the framework configs at the http (global) level                                                          |
 | /data/conf/nginx/server-partials.d  | `.conf` files here are included by the framework configs at the server level                                                                 |
 | /data/conf/nginx/security-headers.d | `.conf` files here are included by the server and location configs to extend or override the applied [security headers](security-headers.md) |
+| /data/conf/nginx/main.d             | `.conf` files here are included in the main section of nginx, e.g. to define `env` statements |                                               |
 | /data/conf/nginx/certificates       | You should mount this directory to a folder on your host system. See the SSL section for further details.                                    |
 
 ## Unprivileged image
