@@ -1,5 +1,8 @@
 # Changelog
 
+`1.25-vscan-4` (2024-09-10)
+- fix cleanup script to not download package index on startup
+
 `1.25-vscan-3` (2024-09-06)
 - add extension point for main config
 
