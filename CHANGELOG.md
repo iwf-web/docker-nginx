@@ -1,5 +1,8 @@
 # Changelog
 
+`1.25-vscan-6` (2024-11-12)
+- allow all methods for virus scanning endpoints - clamav will only handle PUT & POST requests
+
 `1.25-vscan-5` (2024-11-12)
 - rename CLAMAV_PORT to CLAMAV_SERVICE_PORT as K8s automatically creates env variables overriding our default 
 
