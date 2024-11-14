@@ -134,9 +134,10 @@ Include the file `clamav-scan.conf` there. Each location you put there is routed
 
 To make it work, each route should comply with the following rules:
 
-- accept POST requests
-- accept one (!) file as a multipart form binary
-- in a multipart form, only the first file with a "filename" property is checked
+- accept POST requests. Requests with other HTTP methods are forwarded as is.
+- accepts files as multipart form binary
+
+All files in a multipart form are checked for malware, but the scanner returns early - as soon as the first malware was found.
 
 See the documentation of `iwfwebsolutions/clamav-rest` for the returned status codes. 
 Generally, if no virus is found, it returns 200 and forwards the request to the CLAMAV_FORWARD_ROUTE (`/index.php` by default).

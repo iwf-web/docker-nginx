@@ -1,10 +1,13 @@
 # Changelog
 
+`1.25-vscan-7` (2024-11-14)
+- vscan: better handling of many files in a multipart request 
+
 `1.25-vscan-6` (2024-11-12)
-- allow all methods for virus scanning endpoints - clamav will only handle PUT & POST requests
+- vscan: allow all methods for virus scanning endpoints - clamav will only handle PUT & POST requests
 
 `1.25-vscan-5` (2024-11-12)
-- rename CLAMAV_PORT to CLAMAV_SERVICE_PORT as K8s automatically creates env variables overriding our default 
+- vscan: rename CLAMAV_PORT to CLAMAV_SERVICE_PORT as K8s automatically creates env variables overriding our default 
 
 `1.25-vscan-4` (2024-09-10)
 - fix cleanup script to not download package index on startup
