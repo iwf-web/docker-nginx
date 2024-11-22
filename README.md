@@ -167,6 +167,23 @@ There are 2 basic rate limiters configured in the `nginx.conf`.
 
 By using these, the requests are delayed until a new slot is free.
 
+
+If you have special use cases where you don't want to forward the request to CLAMAV_FORWARD_ROUTE you can forward
+the original non-virus request to a named location by doing this:
+
+```
+location @my_forward_route {
+  // do something here
+}
+
+location "/common/api/files" {
+   set $clamav_foward_route @my_forward_route;
+   include "clamav-scan.conf";
+}
+```
+
+If the variable `$clamav_forward_route` is set it will use this one, otherwise it uses the env var CLAMAV_FORWARD_ROUTE.
+
 ### enable the virus scanning healthcheck endpoint
 
 By configuring this endpoint you can monitor if the virus signatures are up2date and the scanner is reachable and running:

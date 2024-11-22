@@ -1,6 +1,9 @@
 # Changelog
 
-`1.25-vscan-7` (2024-11-14)
+`1.25-vscan-8` (2024-11-22)
+- vscan: improve logging and allow forwarding to named locations
+
+  `1.25-vscan-7` (2024-11-14)
 - vscan: better handling of many files in a multipart request 
 
 `1.25-vscan-6` (2024-11-12)
