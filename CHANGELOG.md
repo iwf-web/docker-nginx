@@ -1,5 +1,8 @@
 # Changelog
 
+`1.27-1` (2024-11-22)
+- new stream for newest openresty base image based on nginx 1.27
+
 `1.25-vscan-8` (2024-11-22)
 - vscan: improve logging and allow forwarding to named locations
 
