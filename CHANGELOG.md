@@ -1,6 +1,9 @@
 # Changelog
 
-`1.27-1` (2024-11-22)
+`1.27-2` (2024-12-11)
+- add 'always' parameter to default security headers
+
+- `1.27-1` (2024-11-22)
 - new stream for newest openresty base image based on nginx 1.27
 
 `1.25-vscan-8` (2024-11-22)
