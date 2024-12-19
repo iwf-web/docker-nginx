@@ -1,15 +1,19 @@
 # Changelog
 
+`1.27-3` (2024-12-19)
+- add avif to craftcms cached file types
+- change default error logging to stderr instead of file
+  
 `1.27-2` (2024-12-11)
 - add 'always' parameter to default security headers
 
-- `1.27-1` (2024-11-22)
+`1.27-1` (2024-11-22)
 - new stream for newest openresty base image based on nginx 1.27
 
 `1.25-vscan-8` (2024-11-22)
 - vscan: improve logging and allow forwarding to named locations
 
-  `1.25-vscan-7` (2024-11-14)
+`1.25-vscan-7` (2024-11-14)
 - vscan: better handling of many files in a multipart request 
 
 `1.25-vscan-6` (2024-11-12)

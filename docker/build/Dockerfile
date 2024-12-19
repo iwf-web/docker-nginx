@@ -29,7 +29,7 @@ ENV WAIT_FOR="fpm:9000"
 ENV UPSTREAM_SERVER="fpm:9000"
 # The default log settings
 ENV ACCESS_LOG="off"
-ENV ERROR_LOG="/var/log/nginx/error.log warn"
+ENV ERROR_LOG="stderr warn"
 # The setting for "listen" - normally this should be 80, but the unprivileged image may have to listen on port 8080
 ENV LISTEN_PORT="80"
 
