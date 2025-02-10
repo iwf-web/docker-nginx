@@ -1,5 +1,8 @@
 # Changelog
 
+`1.27-4` (2025-02-10)
+- fix: passing uri arguments to the CLAMAV_FORWARD_ROUTE
+
 `1.27-3` (2024-12-19)
 - add avif to craftcms cached file types
 - change default error logging to stderr instead of file
