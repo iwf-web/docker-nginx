@@ -1,5 +1,8 @@
 # Changelog
 
+`1.27-5` (2025-02-13)
+- really fix: passing uri arguments to the CLAMAV_FORWARD_ROUTE
+
 `1.27-4` (2025-02-10)
 - fix: passing uri arguments to the CLAMAV_FORWARD_ROUTE
 
