@@ -1,5 +1,8 @@
 # Changelog
 
+`1.27-6` (2025-03-05)
+- virus scanner: correctly handle large GET request bodies when forwarding requests 
+
 `1.27-5` (2025-02-13)
 - really fix: passing uri arguments to the CLAMAV_FORWARD_ROUTE
 
