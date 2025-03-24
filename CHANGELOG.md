@@ -1,5 +1,8 @@
 # Changelog
 
+`1.27-7` (2025-03-24)
+- fix craftcms.conf (duplicate config directives)
+
 `1.27-6` (2025-03-05)
 - virus scanner: correctly handle large GET request bodies when forwarding requests 
 
