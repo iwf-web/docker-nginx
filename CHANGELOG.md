@@ -1,7 +1,10 @@
 # Changelog
 
+`1.29-1` (2026-03-06)
+- new version based on openresty 1.29.2
+
 `1.27-8` (2026-03-06)
-- fix craftcms.conf (duplicate config directives)
+- raise openresty version to latest 1.27
 
 `1.27-7` (2025-03-24)
 - fix craftcms.conf (duplicate config directives)
