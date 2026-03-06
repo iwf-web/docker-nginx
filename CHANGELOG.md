@@ -1,5 +1,8 @@
 # Changelog
 
+`1.27-8` (2026-03-06)
+- fix craftcms.conf (duplicate config directives)
+
 `1.27-7` (2025-03-24)
 - fix craftcms.conf (duplicate config directives)
 
