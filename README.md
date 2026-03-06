@@ -13,19 +13,19 @@ It should be used together with our [PHP base image](https://hub.docker.com/repo
 
 ## Links
 
-The image is built weekly based on the official image `openresty:1.25.x.x-alpine-apk`. 
+The image is built weekly based on the official image `openresty:1.29.x.x-alpine-apk`. 
 This base image allows having complex rules applied e.g. by Lua in the webserver configuration. This is needed to allow pass-thru virus scanning with `clamav-rest`. 
 
 It's available here: https://hub.docker.com/repository/docker/iwfwebsolutions/nginx
 
-You should always use the tag: `iwfwebsolutions/nginx:1.25-latest`
+You should always use the tag: `iwfwebsolutions/nginx:1.29-latest`
 
 ## Versions
 
-The X part of the version number `1.25-X` is always increased when we update the image configuration (e.g. config files).
+The X part of the version number `1.29-X` is always increased when we update the image configuration (e.g. config files).
 
 It is NOT an indication to the patch level of the base image. It's **always** the **latest** nginx image of the supplied version,
-currently only `1.25`.
+currently only `1.29`.
 
 See the CHANGELOG to find out the details.
 
