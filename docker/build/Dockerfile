@@ -1,6 +1,6 @@
-FROM openresty/openresty:1.29.2.1-alpine-apk
+FROM openresty/openresty:1.29.2.1-alpine
 
-MAINTAINER Jens Hassler <j.hassler@iwf.ch>
+LABEL org.opencontainers.image.authors="Jens Hassler <j.hassler@iwf.ch>"
 
 # Argument variables
 ARG GIT_COMMIT
