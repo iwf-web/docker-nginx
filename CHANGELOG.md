@@ -1,5 +1,9 @@
 # Changelog
 
+`1.29-2` (2026-03-27)
+- allow overriding the ssl listen port (LISTEN_PORT_SSL)
+- upgrade to openresty 1.29.2.2
+
 `1.29-1` (2026-03-06)
 - new version based on openresty 1.29.2
 

@@ -1,4 +1,4 @@
-FROM openresty/openresty:1.29.2.1-alpine
+FROM openresty/openresty:1.29.2.2-alpine
 
 LABEL org.opencontainers.image.authors="Jens Hassler <j.hassler@iwf.ch>"
 
@@ -32,6 +32,7 @@ ENV ACCESS_LOG="off"
 ENV ERROR_LOG="stderr warn"
 # The setting for "listen" - normally this should be 80, but the unprivileged image may have to listen on port 8080
 ENV LISTEN_PORT="80"
+ENV LISTEN_PORT_SSL="443"
 
 # Add labels
 LABEL io.web-solutions.git-branch=$GIT_BRANCH \
