@@ -1,5 +1,8 @@
 # Changelog
 
+`1.29-3` (2026-03-30)
+- remove wait_for feature as it's usually not needed and can be accomplished in K8s directly
+
 `1.29-2` (2026-03-27)
 - allow overriding the ssl listen port (LISTEN_PORT_SSL)
 - upgrade to openresty 1.29.2.2

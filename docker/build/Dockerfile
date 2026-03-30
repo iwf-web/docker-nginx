@@ -23,8 +23,6 @@ ENV APP_FRAMEWORK="symfony4"
 ENV RUNTIME_ENVIRONMENT="local"
 ENV DOCUMENT_ROOT="/app/web"
 
-# The host the script should "wait for" on startup by default - if empty, script does not wait
-ENV WAIT_FOR="fpm:9000"
 # The upstream host:port for nginx as proxy (nginx server directive)
 ENV UPSTREAM_SERVER="fpm:9000"
 # The default log settings
@@ -53,14 +51,10 @@ COPY --chown=nginx ./assets/ /
 # temporarily switch to root
 USER root
 
-# adjust ownerships
-RUN chmod +x /usr/local/bin/webstartup.sh && chmod +x /usr/local/bin/wait-for.sh
-
-
 # install additional software
-# netcat (nc) for wait-for.sh script, openssl for initial local certs, sudo for the startup scripts
+# openssl for initial local certs, sudo for the startup scripts
 # this stuff will be removed upon startup in 99_cleanup.sh
-RUN apk update && apk add --no-cache netcat-openbsd openssl sudo
+RUN apk update && apk add --no-cache openssl sudo
 
 # upgrade all software to newest versions
 RUN apk add --upgrade --no-cache apk-tools && apk upgrade --no-cache --available
