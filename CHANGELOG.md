@@ -1,5 +1,8 @@
 # Changelog
 
+`1.29-4` (2026-06-29)
+- upgrade to openresty 1.29.2.5
+
 `1.29-3` (2026-03-30)
 - remove wait_for feature as it's usually not needed and can be accomplished in K8s directly
 

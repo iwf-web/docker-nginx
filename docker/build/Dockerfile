@@ -1,4 +1,4 @@
-FROM openresty/openresty:1.29.2.2-alpine
+FROM openresty/openresty:1.29.2.5-alpine
 
 LABEL org.opencontainers.image.authors="Jens Hassler <j.hassler@iwf.ch>"
 
