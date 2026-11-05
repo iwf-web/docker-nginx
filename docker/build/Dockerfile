@@ -59,11 +59,13 @@ RUN ln -fs /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 # pre-create the document root
 RUN mkdir -p ${DOCUMENT_ROOT} && chown nginx ${DOCUMENT_ROOT}
 
-# remove symlinks to busybox for some unneeded internet tools - the commands itself cannot be deleted.
-RUN rm -f /bin/wget /usr/bin/wget /bin/ping /usr/bin/ping /bin/curl /usr/bin/curl
-
 # remove the package manager, no software changes possible at runtime
 RUN apk del --no-cache apk-tools
+
+# remove symlinks to busybox for some unneeded internet tools - the commands itself cannot be deleted.
+# must run after the last apk call, the busybox trigger would restore the symlinks otherwise
+# ssl_client is removed so busybox wget cannot do https (cannot be removed with apk because busybox depends on it)
+RUN rm -f /bin/wget /usr/bin/wget /bin/ping /usr/bin/ping /bin/curl /usr/bin/curl /usr/bin/ssl_client
 
 USER nginx
 
