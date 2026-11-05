@@ -74,7 +74,6 @@ All the scripts in the container's `/data/dockerinit.d` folder are run on each s
 | 00_create_self-signed-cert.sh | Creates a self-signed certificate for the webserver if no certificate exists in /data/conf/nginx/certificates                                                                           |
 | 00_enable_site.sh             | Copies and resolves `UPSTREAM_SERVER` with the `APP_FRAMEWORK`.conf file from `nginx/framework-configs` to `nginx/sites.d` where it's picked up by the default `nginx.conf`             |
 | 30_adjust_robots-txt.sh       | Creates a "Disallow all" robots.txt file for all environments (defined by `RUNTIME_ENVIRONMENT`) NOT being `local` and `prod`. This prevents search engines to index your DEV/QA sites. |
-| 99_cleanup.sh                 | Removes some system software that is only required for the startup process                                                                                                              |
 
 ## Extension points (change or extend configuration)
 

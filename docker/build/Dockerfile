@@ -46,13 +46,9 @@ RUN chown -R nginx /var/run/openresty /usr/local/openresty/nginx
 # COPY our config
 COPY --chown=nginx ./assets/ /
 
-# temporarily switch to root
-USER root
-
 # install additional software
-# openssl for initial local certs, sudo for the startup scripts
-# this stuff will be removed upon startup in 99_cleanup.sh
-RUN apk update && apk add --no-cache openssl sudo
+# openssl for initial local certs
+RUN apk add --no-cache openssl
 
 # upgrade all software to newest versions
 RUN apk add --upgrade --no-cache apk-tools && apk upgrade --no-cache --available
@@ -66,8 +62,9 @@ RUN mkdir -p ${DOCUMENT_ROOT} && chown nginx ${DOCUMENT_ROOT}
 # remove symlinks to busybox for some unneeded internet tools - the commands itself cannot be deleted.
 RUN rm -f /bin/wget /usr/bin/wget /bin/ping /usr/bin/ping /bin/curl /usr/bin/curl
 
-# enable sudo for making startup scripts work and switch back to unprivileged user
-RUN echo "nginx ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+# remove the package manager, no software changes possible at runtime
+RUN apk del --no-cache apk-tools
+
 USER nginx
 
 ENTRYPOINT ["/usr/local/bin/webstartup.sh"]
