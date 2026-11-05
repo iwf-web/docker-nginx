@@ -1,5 +1,9 @@
 # Changelog
 
+`1.31-1` (2026-11-05)
+- upgrade to openresty 1.31.8.1
+- implement some security improvements
+
 `1.29-4` (2026-06-29)
 - upgrade to openresty 1.29.2.5
 
