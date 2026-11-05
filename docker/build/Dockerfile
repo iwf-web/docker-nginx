@@ -10,8 +10,6 @@ ARG BUILD_CREATOR
 ARG BUILD_NUMBER
 ARG TIMEZONE=Europe/Zurich
 
-ENV DEBIAN_FRONTEND=noninteractive
-
 # default env variables for the clamav virus scanning connection
 ENV CLAMAV_SCAN_PATH="/vscan"
 ENV CLAMAV_HOST="clamav"
