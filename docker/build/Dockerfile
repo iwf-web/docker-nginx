@@ -1,10 +1,10 @@
-FROM openresty/openresty:1.29.2.5-alpine
+FROM openresty/openresty:1.31.8.1-alpine
 
 LABEL org.opencontainers.image.authors="Jens Hassler <j.hassler@iwf.ch>"
 
 # Argument variables
 ARG GIT_COMMIT
-ARG GIT_BRANCH=releases/nginx-1.29
+ARG GIT_BRANCH=releases/nginx-1.31
 ARG GIT_DIRTY=undefined
 ARG BUILD_CREATOR
 ARG BUILD_NUMBER
