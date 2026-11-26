@@ -1,5 +1,11 @@
 # Changelog
 
+`1.31-3` (2026-11-26)
+- honor X-Real-Ip header from Traefik to correctly see real client IP addresses e.g. for rate limiting
+
+`1.31-2` (2026-11-23)
+- upgrade to openresty 1.31.9.1
+
 `1.31-1` (2026-11-05)
 - upgrade to openresty 1.31.8.1
 - implement some security improvements
