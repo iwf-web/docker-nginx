@@ -1,7 +1,8 @@
 # Changelog
 
-`1.31-3` (2026-11-26)
+`1.31-3` (2026-11-27)
 - honor X-Real-Ip header from Traefik to correctly see real client IP addresses e.g. for rate limiting
+- only POST and PUT requests count towards the vscan-scan rate limit, as only those are virus-scanned
 
 `1.31-2` (2026-11-23)
 - upgrade to openresty 1.31.9.1
