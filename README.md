@@ -13,19 +13,19 @@ It should be used together with our [PHP base image](https://hub.docker.com/repo
 
 ## Links
 
-The image is built weekly based on the official image `openresty:1.29.x.x-alpine-apk`. 
+The image is built weekly based on the official image `openresty/openresty:1.31.x.x-alpine`. 
 This base image allows having complex rules applied e.g. by Lua in the webserver configuration. This is needed to allow pass-thru virus scanning with `clamav-rest`. 
 
 It's available here: https://hub.docker.com/repository/docker/iwfwebsolutions/nginx
 
-You should always use the tag: `iwfwebsolutions/nginx:1.29-latest`
+You should always use the tag: `iwfwebsolutions/nginx:1.31-latest`
 
 ## Versions
 
-The X part of the version number `1.29-X` is always increased when we update the image configuration (e.g. config files).
+The X part of the version number `1.31-X` is always increased when we update the image configuration (e.g. config files).
 
 It is NOT an indication to the patch level of the base image. It's **always** the **latest** nginx image of the supplied version,
-currently only `1.29`.
+currently only `1.31`.
 
 See the CHANGELOG to find out the details.
 
@@ -132,7 +132,7 @@ Include the file `clamav-scan.conf` there. Each location you put there is routed
 
 To make it work, each route should comply with the following rules:
 
-- accept POST requests. Requests with other HTTP methods are forwarded as is.
+- accept POST or PUT requests. Requests with other HTTP methods are forwarded as is.
 - accepts files as multipart form binary
 
 All files in a multipart form are checked for malware, but the scanner returns early - as soon as the first malware was found.
@@ -160,10 +160,14 @@ location "/common/api/files" {
 
 There are 2 basic rate limiters configured in the `nginx.conf`. 
 
-- `vscan-scan`: 30 requests/minute per IP address
+- `vscan-scan`: 30 requests/minute per IP address, only POST and PUT requests (= uploads) count towards the limit
 - `vscan-health`: 10 requests/minute per IP address
 
-By using these, the requests are delayed until a new slot is free.
+By using these, requests exceeding the rate are delayed until a new slot is free. If more requests than the `burst` value
+are queued, nginx rejects them with status code `503`.
+
+The rate limiters work per client IP address. If nginx runs behind a reverse proxy (e.g. Traefik), see
+[Real client IP behind a reverse proxy](#real-client-ip-behind-a-reverse-proxy).
 
 
 If you have special use cases where you don't want to forward the request to CLAMAV_FORWARD_ROUTE you can forward
@@ -196,6 +200,15 @@ location "/vscan-healthcheck" {
 This endpoint returns `200` if everything's fine, `420` if the signatures are out-of-date, and a 500er if something else is wrong (e.g. scanner not running).
 See the docs of `iwfwebsolutions/clamav-rest` for more details.
 
+
+## Real client IP behind a reverse proxy
+
+If a request comes from a private network address (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `fc00::/7`),
+nginx takes the client IP address from the `X-Real-Ip` header (set e.g. by Traefik). This IP address is used for
+`$remote_addr` (access log) and the rate limiters.
+
+Note: every client within these private networks can set this header and thereby choose its IP address as seen by nginx.
+Requests from public addresses are not affected.
 
 ## SSL support
 
